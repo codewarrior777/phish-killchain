@@ -30,6 +30,7 @@ celeste_css = """
     font-family: 'Share Tech Mono', monospace; 
 }
 
+/* TÍTULO PRINCIPAL (El que faltaba) */
 h1 { 
     color: #001a33 !important; 
     text-transform: uppercase; 
@@ -85,7 +86,7 @@ div[data-testid="stMetricValue"] {
     box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
-/* --- ESTILOS PARA EL REPORTE DE IA (Nativo de Streamlit) --- */
+/* --- ESTILOS PARA EL REPORTE DE IA --- */
 div[data-testid="stExpander"], .stInfo, .stAlert {
     background-color: #001a33 !important;
     color: #ffffff !important;
@@ -99,7 +100,7 @@ div[data-testid="stMarkdownContainer"] h3 {
     text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
 }
 
-/* Forzar que el texto generado por la IA sea blanco para que contraste con el fondo oscuro */
+/* Forzar que el texto generado por la IA sea blanco */
 .stInfo div, .stInfo p, .stInfo li, .stInfo td {
     color: #ffffff !important;
 }
@@ -152,12 +153,19 @@ def generate_ai_analysis(body, technical_findings):
     {findings_text}
     
     Your Task:
-    Analyze the email body and write a Threat Intelligence Report:
-    1. Explain the psychology of the attack (e.g., authority, urgency, fear). Use a table to map tactics.
-    2. Link the psychological tactics to the technical findings. Use another table for this correlation.
+    Analyze the email body and write a Threat Intelligence Report.
+    
+    CRITICAL INSTRUCTIONS FOR FORMATTING:
+    - You must use proper Markdown.
+    - Use `###` for section titles.
+    - Ensure all tables have the correct Markdown separator line (e.g., `|---|---|`).
+    
+    Structure:
+    1. Create a table titled "PSYCHOLOGICAL ATTACK MATRIX" with columns: Psychological Lever | Description | How It Is Employed in the Email.
+    2. Create a second table titled "CORRELATION OF PSYCHOLOGICAL TACTICS WITH TECHNICAL INDICATORS" with columns: Technical IOC | Corresponding Psychological Lever(s) | Explanation of the Link.
     3. Give a 1-sentence recommendation for SOC analysts.
     
-    Keep the tone professional, urgent, and analytical. Use Markdown.
+    Keep the tone professional, urgent, and analytical.
     """
     
     try:
@@ -168,14 +176,14 @@ def generate_ai_analysis(body, technical_findings):
                 {"role": "user", "content": f"Here is the email body:\n\n{body}"}
             ],
             temperature=0.3,
-            max_tokens=600
+            max_tokens=1000
         )
         return response.choices[0].message.content.strip()
     except Exception as e:
         return f"❌ AI Analysis failed: {str(e)}"
 
 # ==========================================
-# HEADER
+# HEADER (AQUÍ ESTÁ EL TÍTULO QUE FALTABA)
 # ==========================================
 st.title("🛡️ PHISH-KILLCHAIN // THREAT FORENSICS")
 st.markdown("**Advanced Social Engineering & Threat Intelligence Analyzer**")
@@ -241,7 +249,7 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
             ))
             fig.update_layout(paper_bgcolor="#00e5ff", height=220, margin=dict(l=20, r=20, t=40, b=10))
             
-            # CORRECCIÓN AQUÍ: use_container_width=True en lugar de width="stretch"
+            # Gráfico corregido
             st.plotly_chart(fig, use_container_width=True, key="gauge_chart")
             
         with col2:
@@ -262,6 +270,7 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
         
         with st.spinner("Threat Intel AI is analyzing the psychological tactics..."):
             ai_report = generate_ai_analysis(parser.body, all_findings)
-            st.info(ai_report)
+            # Renderizado de tablas de la IA corregido
+            st.markdown(ai_report)
 else:
     st.info("💡 **STANDBY MODE:** Awaiting forensic analysis command.")
