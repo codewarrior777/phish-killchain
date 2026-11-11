@@ -240,7 +240,9 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
                 }
             ))
             fig.update_layout(paper_bgcolor="#00e5ff", height=220, margin=dict(l=20, r=20, t=40, b=10))
-            st.plotly_chart(fig, width="stretch", key="gauge_chart")
+            
+            # CORRECCIÓN AQUÍ: use_container_width=True en lugar de width="stretch"
+            st.plotly_chart(fig, use_container_width=True, key="gauge_chart")
             
         with col2:
             st.markdown("### 🚨 TECHNICAL IOCs DETECTED")
@@ -260,8 +262,6 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
         
         with st.spinner("Threat Intel AI is analyzing the psychological tactics..."):
             ai_report = generate_ai_analysis(parser.body, all_findings)
-            # EL FIX ESTÁ AQUÍ: Usamos st.info() o st.markdown() nativo en lugar de envolverlo en HTML puro
-            # para que Streamlit procese correctamente las tablas de Markdown.
             st.info(ai_report)
 else:
     st.info("💡 **STANDBY MODE:** Awaiting forensic analysis command.")
