@@ -50,36 +50,29 @@ graph TD
     style A fill:#00e5ff,stroke:#001a33,stroke-width:2px,color:#001a33
     style E fill:#001a33,stroke:#ff003c,stroke-width:2px,color:#fff
     style F fill:#00e5ff,stroke:#001a33,stroke-width:2px,color:#001a33
-```
+    🚀 How to Run Locally
+Installation
+Clone the repository:
 
-## 🚀 How to Run Locally
+bash
+git clone https://github.com/codewarrior777/phish-killchain.git
+cd phish-killchain
+Create a virtual environment and install dependencies:
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/codewarrior777/phish-killchain.git
-   cd phish-killchain
-   ```
+bash
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1  # Windows
+# source .venv/bin/activate   # Mac/Linux
+pip install -r requirements.txt
+Create a .env file and add your Groq API key:
 
-2. Create a virtual environment and install dependencies:
-   ```bash
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1  # Windows
-   pip install -r requirements.txt
-   ```
+env
+GROQ_API_KEY="gsk_your_api_key_here"
+Run the dashboard:
 
-3. Create a `.env` file and add your Groq API key:
-   ```env
-   GROQ_API_KEY="gsk_your_api_key_here"
-   ```
+bash
+streamlit run app.py
+🔒 Ethical Disclaimer
+This tool is built for educational and defensive cybersecurity purposes only. It is designed to analyze synthetic emails for threat intelligence training. Do not use this tool to process or upload real, sensitive personal emails to public environments.
 
-4. Run the dashboard:
-   ```bash
-   streamlit run app.py
-   ```
-
-## 🔒 Ethical Disclaimer
-This tool is built for **educational and defensive cybersecurity purposes only**. It is designed to analyze synthetic emails for threat intelligence training. Do not use this tool to process or upload real, sensitive personal emails to public environments.
-
----
-*Built as a Cybersecurity & InfoSec Portfolio Project by Gustavo Ramos.*
+Built as a Cybersecurity & InfoSec Portfolio Project by Gustavo Ramos.
