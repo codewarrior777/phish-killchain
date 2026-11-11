@@ -1,6 +1,6 @@
 """
 Phish-Killchain: Advanced Email Forensics & Social Engineering Analyzer.
-Ultimate Light Neon Sky Blue Theme + Impactful AI Report.
+Ultimate Light Neon Sky Blue Theme.
 """
 
 import streamlit as st
@@ -17,7 +17,7 @@ load_dotenv()
 st.set_page_config(page_title="Phish-Killchain", page_icon="🛡️", layout="wide")
 
 # ==========================================
-# 🎨 LIGHT NEON SKY BLUE THEME (CSS) - IMPACTFUL
+# 🎨 LIGHT NEON SKY BLUE THEME (CSS)
 # ==========================================
 celeste_css = """
 <style>
@@ -30,7 +30,6 @@ celeste_css = """
     font-family: 'Share Tech Mono', monospace; 
 }
 
-/* Título Principal: Impacto Retro-Futurista */
 h1 { 
     color: #001a33 !important; 
     text-transform: uppercase; 
@@ -41,14 +40,12 @@ h1 {
     text-shadow: 3px 3px 0px #ffffff, 0 0 20px rgba(255, 255, 255, 0.4); 
 }
 
-/* Subtítulos Generales de la App */
 h2, h3 { 
     color: #003366 !important; 
     text-transform: uppercase; 
     font-weight: bold;
 }
 
-/* Botones de acción */
 .stButton > button { 
     background-color: #ffffff !important; 
     color: #001a33 !important; 
@@ -66,7 +63,6 @@ h2, h3 {
     box-shadow: 0 0 20px rgba(0, 26, 51, 0.8); 
 }
 
-/* Tarjetas de métricas */
 div[data-testid="stMetric"] { 
     background-color: #ffffff; 
     border: 2px solid #001a33; 
@@ -78,7 +74,6 @@ div[data-testid="stMetricValue"] {
     font-weight: 900;
 }
 
-/* Terminal de correo */
 .terminal-window { 
     background-color: #001a33; 
     border: 2px solid #001a33; 
@@ -90,55 +85,44 @@ div[data-testid="stMetricValue"] {
     box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
-/* =========================================
-   ESTILO ESPECIAL PARA EL REPORTE DE LA IA
-   ========================================= */
-.ai-report-box {
-    background-color: #001a33;
-    color: #ffffff;
-    padding: 20px;
-    border-left: 10px solid #ff003c;
-    font-size: 15px;
-    line-height: 1.6;
-    box-shadow: 5px 5px 0px rgba(0, 26, 51, 0.3);
+/* --- ESTILOS PARA EL REPORTE DE IA (Nativo de Streamlit) --- */
+div[data-testid="stExpander"], .stInfo, .stAlert {
+    background-color: #001a33 !important;
+    color: #ffffff !important;
 }
 
-/* Títulos dentro del reporte de la IA (Ej: 1. Psychological...) */
-.ai-report-box h1, 
-.ai-report-box h2, 
-.ai-report-box h3, 
-.ai-report-box h4 {
-    color: #00e5ff !important; /* Celeste Neón */
+/* Títulos dentro de las tablas y el reporte */
+div[data-testid="stMarkdownContainer"] h1, 
+div[data-testid="stMarkdownContainer"] h2, 
+div[data-testid="stMarkdownContainer"] h3 {
+    color: #00e5ff !important;
     text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-    border-bottom: 1px solid #00e5ff;
-    padding-bottom: 5px;
-    margin-top: 20px;
 }
 
-/* Tablas dentro del reporte de la IA */
-.ai-report-box table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 15px;
+/* Forzar que el texto generado por la IA sea blanco para que contraste con el fondo oscuro */
+.stInfo div, .stInfo p, .stInfo li, .stInfo td {
+    color: #ffffff !important;
 }
-.ai-report-box th {
+
+/* Estilo para las tablas de la IA (Markdown) */
+table {
+    background-color: #001a33 !important;
+    color: #ffffff !important;
+    border-collapse: collapse;
+    width: 100%;
+}
+th {
     background-color: #00e5ff !important;
     color: #001a33 !important;
     font-weight: bold;
+    padding: 10px;
     border: 1px solid #001a33;
-    padding: 10px;
-    text-align: left;
 }
-.ai-report-box td {
-    border: 1px solid #00e5ff;
+td {
+    border: 1px solid #00e5ff !important;
     padding: 10px;
-    color: #ffffff;
-}
-.ai-report-box p {
-    color: #ffffff;
 }
 
-/* Sidebar */
 [data-testid="stSidebar"] {
     background-color: #00d2ff;
 }
@@ -153,7 +137,6 @@ client = OpenAI(
     base_url="https://api.groq.com/openai/v1",
     api_key=os.getenv("GROQ_API_KEY", "dummy_key")
 )
-# Modelo actualizado para evitar el error 404
 MODEL = "openai/gpt-oss-120b" 
 
 def generate_ai_analysis(body, technical_findings):
@@ -171,7 +154,7 @@ def generate_ai_analysis(body, technical_findings):
     Your Task:
     Analyze the email body and write a Threat Intelligence Report:
     1. Explain the psychology of the attack (e.g., authority, urgency, fear). Use a table to map tactics.
-    2. Link the psychological tactics to the technical findings.
+    2. Link the psychological tactics to the technical findings. Use another table for this correlation.
     3. Give a 1-sentence recommendation for SOC analysts.
     
     Keep the tone professional, urgent, and analytical. Use Markdown.
@@ -199,7 +182,6 @@ st.markdown("**Advanced Social Engineering & Threat Intelligence Analyzer**")
 
 st.sidebar.warning("⚠️ **RESTRICTED SYSTEM**\n\nThis tool is for defensive security analysis. Never upload real sensitive emails. Use the synthetic sample provided.")
 
-# Generar el archivo de prueba si no existe
 sample_path = os.path.join(os.path.dirname(__file__), "sample_phishing.eml")
 if not os.path.exists(sample_path):
     generate_phishing_email()
@@ -278,7 +260,8 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
         
         with st.spinner("Threat Intel AI is analyzing the psychological tactics..."):
             ai_report = generate_ai_analysis(parser.body, all_findings)
-            # Envolvemos la respuesta de la IA en la caja con el nuevo estilo CSS
-            st.markdown(f'<div class="ai-report-box">{ai_report}</div>', unsafe_allow_html=True)
+            # EL FIX ESTÁ AQUÍ: Usamos st.info() o st.markdown() nativo en lugar de envolverlo en HTML puro
+            # para que Streamlit procese correctamente las tablas de Markdown.
+            st.info(ai_report)
 else:
     st.info("💡 **STANDBY MODE:** Awaiting forensic analysis command.")
