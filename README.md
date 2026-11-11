@@ -18,7 +18,7 @@ No installation needed — just click and explore the forensic terminal in your 
 
 ## 📸 Dashboard Preview
 
-![Phish-Killchain Dashboard](assets/phish_killchain_hud.png)
+![Phish-Killchain Dashboard](assets/phish-kill-hud.png)
 
 ## 🚨 The Problem & The Solution
 
