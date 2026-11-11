@@ -1,5 +1,7 @@
 # 🛡️ Phish-Killchain: Advanced Email Forensics & Threat Intelligence
 
+[![Live Demo](https://img.shields.io/badge/demo-LIVE-brightgreen?style=for-the-badge&logo=streamlit)](https://phish-killchain-2nmttsfryeppkwpmzcuvpd.streamlit.app/)
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://phish-killchain-2nmttsfryeppkwpmzcuvpd.streamlit.app/)
 [![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
 [![Cybersecurity](https://img.shields.io/badge/Domain-Cybersecurity%20%7C%20Forensics-red.svg)]()
 [![AI](https://img.shields.io/badge/AI-Groq%20LLM-orange.svg)]()
@@ -7,6 +9,12 @@
 An advanced **Email Forensics and Threat Intelligence** dashboard designed to intercept the initial attack vector of a cyber breach: the phishing email. 
 
 Inspired by the historic Binance hack (TraderTraitor), where a $6.3B heist began with a single spear-phishing email, this tool analyzes raw `.eml` files to detect technical and psychological threats before the victim clicks.
+
+## 🌐 Try It Live
+
+🔴 **[Open the Interactive Dashboard Here](https://phish-killchain-2nmttsfryeppkwpmzcuvpd.streamlit.app/)**
+
+No installation needed — just click and explore the forensic terminal in your browser.
 
 ## 📸 Dashboard Preview
 
@@ -46,13 +54,14 @@ graph TD
 
 ## 🚀 How to Run Locally
 
+### Installation
 1. Clone the repository:
    ```bash
    git clone https://github.com/codewarrior777/phish-killchain.git
    cd phish-killchain
    ```
 
-2. Install dependencies:
+2. Create a virtual environment and install dependencies:
    ```bash
    python -m venv .venv
    .\.venv\Scripts\Activate.ps1  # Windows
