@@ -77,13 +77,15 @@ div[data-testid="stExpander"], .stInfo, .stAlert {
     color: #ffffff !important;
 }
 
-/* ESTILOS PARA LOS TÍTULOS DEL REPORTE DE IA */
+/* ESTILOS CORREGIDOS PARA LOS TÍTULOS DEL REPORTE DE IA */
 div[data-testid="stMarkdownContainer"] h2, 
 div[data-testid="stMarkdownContainer"] h3 {
-    color: #00e5ff !important;
-    text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-    border-bottom: none !important;
-    margin-top: 1.5em !important;
+    color: #001a33 !important; /* Azul oscuro para que sea visible */
+    text-shadow: none !important;
+    border-bottom: 2px solid #001a33 !important;
+    margin-top: 2em !important;
+    margin-bottom: 1em !important;
+    padding-bottom: 5px;
 }
 
 .stInfo div, .stInfo p, .stInfo li, .stInfo td {
@@ -184,7 +186,6 @@ def generate_ai_analysis(body, technical_findings):
         
     findings_text = "\n".join(technical_findings) if technical_findings else "No technical IOCs found."
     
-    # PROMPT ACTUALIZADO PARA FORZAR LOS TÍTULOS ###
     system_prompt = f"""
     You are a Senior Threat Intelligence Analyst specializing in Social Engineering and Phishing.
     We have intercepted an email. Our technical scanner found these indicators of compromise (IOCs):
