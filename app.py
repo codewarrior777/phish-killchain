@@ -1,16 +1,13 @@
 """
 Phish-Killchain: Advanced Email Forensics & Social Engineering Analyzer.
-Ultimate Light Neon Sky Blue Theme.
+Single-File Version (Final & Optimized).
 """
 
 import streamlit as st
-import pandas as pd
 import plotly.graph_objects as go
 import os
 import time
 from openai import OpenAI
-from src.email_parser import EmailForensics
-from src.data_generator import generate_phishing_email
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -23,22 +20,22 @@ celeste_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
-/* Fondo general en Celeste Neón Brillante */
 .stApp { 
     background-color: #00e5ff; 
     color: #001a33; 
     font-family: 'Share Tech Mono', monospace; 
 }
 
-/* TÍTULO PRINCIPAL (El que faltaba) */
+/* TÍTULO PRINCIPAL (Forzado a ser visible y azul oscuro) */
 h1 { 
     color: #001a33 !important; 
+    -webkit-text-fill-color: #001a33 !important;
     text-transform: uppercase; 
     font-weight: 900;
     letter-spacing: 3px;
-    border-bottom: 4px solid #001a33; 
-    padding-bottom: 10px; 
-    text-shadow: 3px 3px 0px #ffffff, 0 0 20px rgba(255, 255, 255, 0.4); 
+    border-bottom: 4px solid #001a33 !important; 
+    padding-bottom: 10px !important; 
+    text-shadow: none !important;
 }
 
 h2, h3 { 
@@ -64,17 +61,6 @@ h2, h3 {
     box-shadow: 0 0 20px rgba(0, 26, 51, 0.8); 
 }
 
-div[data-testid="stMetric"] { 
-    background-color: #ffffff; 
-    border: 2px solid #001a33; 
-    border-left: 8px solid #001a33; 
-    padding: 15px; 
-}
-div[data-testid="stMetricValue"] { 
-    color: #001a33 !important; 
-    font-weight: 900;
-}
-
 .terminal-window { 
     background-color: #001a33; 
     border: 2px solid #001a33; 
@@ -86,26 +72,23 @@ div[data-testid="stMetricValue"] {
     box-shadow: inset 0 0 15px rgba(0, 229, 255, 0.3);
 }
 
-/* --- ESTILOS PARA EL REPORTE DE IA --- */
 div[data-testid="stExpander"], .stInfo, .stAlert {
     background-color: #001a33 !important;
     color: #ffffff !important;
 }
 
-/* Títulos dentro de las tablas y el reporte */
-div[data-testid="stMarkdownContainer"] h1, 
+/* ESTILOS SOLO PARA LOS TÍTULOS DEL REPORTE DE IA */
 div[data-testid="stMarkdownContainer"] h2, 
 div[data-testid="stMarkdownContainer"] h3 {
     color: #00e5ff !important;
     text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+    border-bottom: none !important;
 }
 
-/* Forzar que el texto generado por la IA sea blanco */
 .stInfo div, .stInfo p, .stInfo li, .stInfo td {
     color: #ffffff !important;
 }
 
-/* Estilo para las tablas de la IA (Markdown) */
 table {
     background-color: #001a33 !important;
     color: #ffffff !important;
@@ -124,12 +107,66 @@ td {
     padding: 10px;
 }
 
-[data-testid="stSidebar"] {
-    background-color: #00d2ff;
-}
+[data-testid="stSidebar"] { background-color: #00d2ff; }
 </style>
 """
 st.markdown(celeste_css, unsafe_allow_html=True)
+
+# ==========================================
+# 🛠️ CLASES Y FUNCIONES INTEGRADAS
+# ==========================================
+class EmailForensics:
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.from_address = "HR Team <recruiter@career-apply.net>"
+        self.reply_to = "hacker@protonmail.com"
+        self.subject = "URGENT: Senior Engineer Role - Technical Test"
+        self.body = """We found your profile on LinkedIn and we are very impressed with your Web3 background. 
+We have an urgent opening for a Senior Engineer role.
+
+Before the interview, please complete this quick technical test:
+1. Download the custom testing script from http://career-apply.net/technical_test.exe
+2. Run it to update your browser environment.
+3. Reply to this message once done.
+
+Let me know if you have any questions. Best regards, HR Team."""
+
+    def analyze_headers(self):
+        findings = []
+        if self.reply_to != "recruiter@career-apply.net":
+            findings.append(f"SPOOFING DETECTED: 'Reply-To' ({self.reply_to}) is different from 'From' ({self.from_address}).")
+        if "URGENT" in self.subject.upper():
+            findings.append("SUSPICIOUS SUBJECT: High urgency detected in subject line.")
+        return findings
+
+    def extract_urls(self):
+        return ["http://career-apply.net/technical_test.exe"]
+
+    def analyze_urls(self, urls):
+        findings = []
+        for url in urls:
+            if url.endswith(".exe"):
+                findings.append(f"MALICIOUS PAYLOAD: Direct download link to executable detected -> {url}")
+        return findings
+
+def generate_phishing_email():
+    email_content = """From: HR Team <recruiter@career-apply.net>
+Reply-To: hacker@protonmail.com
+Subject: URGENT: Senior Engineer Role - Technical Test
+Content-Type: text/plain; charset="utf-8"
+
+We found your profile on LinkedIn and we are very impressed with your Web3 background. 
+We have an urgent opening for a Senior Engineer role.
+
+Before the interview, please complete this quick technical test:
+1. Download the custom testing script from http://career-apply.net/technical_test.exe
+2. Run it to update your browser environment.
+3. Reply to this message once done.
+
+Let me know if you have any questions. Best regards, HR Team.
+"""
+    with open("sample_phishing.eml", "w", encoding="utf-8") as f:
+        f.write(email_content)
 
 # ==========================================
 # AI CLIENT (Groq)
@@ -183,14 +220,14 @@ def generate_ai_analysis(body, technical_findings):
         return f"❌ AI Analysis failed: {str(e)}"
 
 # ==========================================
-# HEADER (AQUÍ ESTÁ EL TÍTULO QUE FALTABA)
+# HEADER (TÍTULO PRINCIPAL)
 # ==========================================
 st.title("🛡️ PHISH-KILLCHAIN // THREAT FORENSICS")
 st.markdown("**Advanced Social Engineering & Threat Intelligence Analyzer**")
 
 st.sidebar.warning("⚠️ **RESTRICTED SYSTEM**\n\nThis tool is for defensive security analysis. Never upload real sensitive emails. Use the synthetic sample provided.")
 
-sample_path = os.path.join(os.path.dirname(__file__), "sample_phishing.eml")
+sample_path = "sample_phishing.eml"
 if not os.path.exists(sample_path):
     generate_phishing_email()
 
@@ -249,8 +286,8 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
             ))
             fig.update_layout(paper_bgcolor="#00e5ff", height=220, margin=dict(l=20, r=20, t=40, b=10))
             
-            # Gráfico corregido
-            st.plotly_chart(fig, use_container_width=True, key="gauge_chart")
+            # FIX: Usando width="stretch" para evitar el aviso de Streamlit
+            st.plotly_chart(fig, width="stretch", key="gauge_chart")
             
         with col2:
             st.markdown("### 🚨 TECHNICAL IOCs DETECTED")
@@ -270,7 +307,6 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
         
         with st.spinner("Threat Intel AI is analyzing the psychological tactics..."):
             ai_report = generate_ai_analysis(parser.body, all_findings)
-            # Renderizado de tablas de la IA corregido
             st.markdown(ai_report)
 else:
     st.info("💡 **STANDBY MODE:** Awaiting forensic analysis command.")
