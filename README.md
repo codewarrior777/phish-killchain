@@ -47,10 +47,12 @@ graph TD
     C -->|Risk Score| F
     D -->|Risk Score| F
     
-    style A fill:#00e5ff,stroke:#001a33,stroke-width:2px,color:#001a33
-    style E fill:#001a33,stroke:#ff003c,stroke-width:2px,color:#fff
-    style F fill:#00e5ff,stroke:#001a33,stroke-width:2px,color:#001a33
-    🚀 How to Run Locally
+    style A fill:#00e5ff,stroke:#001a33,stroke-width:2px
+    style E fill:#001a33,stroke:#ff003c,stroke-width:2px
+    style F fill:#00e5ff,stroke:#001a33,stroke-width:2px
+
+```
+🚀 How to Run Locally
 Installation
 Clone the repository:
 
@@ -74,5 +76,3 @@ bash
 streamlit run app.py
 🔒 Ethical Disclaimer
 This tool is built for educational and defensive cybersecurity purposes only. It is designed to analyze synthetic emails for threat intelligence training. Do not use this tool to process or upload real, sensitive personal emails to public environments.
-
-Built as a Cybersecurity & InfoSec Portfolio Project by Gustavo Ramos.
