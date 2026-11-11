@@ -26,7 +26,7 @@ celeste_css = """
     font-family: 'Share Tech Mono', monospace; 
 }
 
-/* TÍTULO PRINCIPAL (Forzado a ser visible y azul oscuro) */
+/* TÍTULO PRINCIPAL */
 h1 { 
     color: #001a33 !important; 
     -webkit-text-fill-color: #001a33 !important;
@@ -77,12 +77,13 @@ div[data-testid="stExpander"], .stInfo, .stAlert {
     color: #ffffff !important;
 }
 
-/* ESTILOS SOLO PARA LOS TÍTULOS DEL REPORTE DE IA */
+/* ESTILOS PARA LOS TÍTULOS DEL REPORTE DE IA */
 div[data-testid="stMarkdownContainer"] h2, 
 div[data-testid="stMarkdownContainer"] h3 {
     color: #00e5ff !important;
     text-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
     border-bottom: none !important;
+    margin-top: 1.5em !important;
 }
 
 .stInfo div, .stInfo p, .stInfo li, .stInfo td {
@@ -113,7 +114,7 @@ td {
 st.markdown(celeste_css, unsafe_allow_html=True)
 
 # ==========================================
-# 🛠️ CLASES Y FUNCIONES INTEGRADAS
+# 🛠️ CLASES Y FUNCIONES
 # ==========================================
 class EmailForensics:
     def __init__(self, file_path):
@@ -183,6 +184,7 @@ def generate_ai_analysis(body, technical_findings):
         
     findings_text = "\n".join(technical_findings) if technical_findings else "No technical IOCs found."
     
+    # PROMPT ACTUALIZADO PARA FORZAR LOS TÍTULOS ###
     system_prompt = f"""
     You are a Senior Threat Intelligence Analyst specializing in Social Engineering and Phishing.
     We have intercepted an email. Our technical scanner found these indicators of compromise (IOCs):
@@ -194,13 +196,18 @@ def generate_ai_analysis(body, technical_findings):
     
     CRITICAL INSTRUCTIONS FOR FORMATTING:
     - You must use proper Markdown.
-    - Use `###` for section titles.
+    - YOU MUST USE `###` FOR ALL SECTION TITLES. Do not use bold text for main titles.
     - Ensure all tables have the correct Markdown separator line (e.g., `|---|---|`).
     
-    Structure:
-    1. Create a table titled "PSYCHOLOGICAL ATTACK MATRIX" with columns: Psychological Lever | Description | How It Is Employed in the Email.
-    2. Create a second table titled "CORRELATION OF PSYCHOLOGICAL TACTICS WITH TECHNICAL INDICATORS" with columns: Technical IOC | Corresponding Psychological Lever(s) | Explanation of the Link.
-    3. Give a 1-sentence recommendation for SOC analysts.
+    Structure exactly like this:
+    ### 1. PSYCHOLOGICAL ATTACK MATRIX
+    Create a table with columns: Psychological Lever | Description | How It Is Employed in the Email.
+    
+    ### 2. CORRELATION OF PSYCHOLOGICAL TACTICS WITH TECHNICAL INDICATORS
+    Create a table with columns: Technical IOC | Corresponding Psychological Lever(s) | Explanation of the Link.
+    
+    ### 3. SOC ANALYST RECOMMENDATION
+    Give a 1-sentence recommendation.
     
     Keep the tone professional, urgent, and analytical.
     """
@@ -220,7 +227,7 @@ def generate_ai_analysis(body, technical_findings):
         return f"❌ AI Analysis failed: {str(e)}"
 
 # ==========================================
-# HEADER (TÍTULO PRINCIPAL)
+# HEADER
 # ==========================================
 st.title("🛡️ PHISH-KILLCHAIN // THREAT FORENSICS")
 st.markdown("**Advanced Social Engineering & Threat Intelligence Analyzer**")
@@ -286,7 +293,6 @@ if st.button("🚀 INITIATE FORENSIC ANALYSIS", type="primary"):
             ))
             fig.update_layout(paper_bgcolor="#00e5ff", height=220, margin=dict(l=20, r=20, t=40, b=10))
             
-            # FIX: Usando width="stretch" para evitar el aviso de Streamlit
             st.plotly_chart(fig, width="stretch", key="gauge_chart")
             
         with col2:
